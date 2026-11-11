@@ -42,13 +42,13 @@ import com.retroplayer.core.theme.LocalRetroStyle
 import com.retroplayer.core.theme.PlayerStyle
 import com.retroplayer.core.theme.RetroType
 
-/** DESIGN.md section 2 layouts, plus the two undrawn ones from section 11. */
+/** Player layouts, plus two that are not designed yet. */
 enum class PlayerLayout { Cover, InnerPortrait, InnerLandscape, Tabletop, CoverLandscape, Minimal, MiniDeckPortrait, MiniDeckLandscape }
 
 /** Hinge band in this composable's coordinates, already including 12 dp clearance per side. */
 data class HingeBand(val top: Dp, val bottom: Dp)
 
-/** Selection order from DESIGN.md section 2. Never keys off device model. */
+/** Selection order. Never keys off device model. */
 fun selectPlayerLayout(width: Dp, height: Dp, tabletop: Boolean, miniDeck: Boolean = false): PlayerLayout = when {
     tabletop -> PlayerLayout.Tabletop
     width < 360.dp -> PlayerLayout.Minimal
@@ -273,7 +273,7 @@ private fun TabletopLayout(state: PlayerUiState, actions: PlayerActions, motion:
 }
 
 // ---------------------------------------------------------------------------------------------
-// Not drawn yet (DESIGN.md 11): cover-screen landscape and the minimal split-screen view
+// Not drawn yet: cover-screen landscape and the minimal split-screen view
 
 @Composable
 private fun CoverLandscapeLayout(state: PlayerUiState, actions: PlayerActions, motion: PlayerMotion) {

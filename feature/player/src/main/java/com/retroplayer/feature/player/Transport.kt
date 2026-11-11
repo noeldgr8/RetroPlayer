@@ -82,7 +82,7 @@ class PlayerActions(
 )
 
 /**
- * Progress row + vinyl buttons or cassette key bank (DESIGN.md 5).
+ * Progress row + vinyl buttons or cassette key bank.
  */
 @Composable
 fun Transport(

@@ -3,7 +3,7 @@ package com.retroplayer.core.media
 import android.graphics.Bitmap
 import android.os.SystemClock
 
-/** Current track, as published by the source app's media session (PRD section 8). */
+/** Current track, as published by the source app's media session. */
 data class NowPlaying(
     val sourcePackage: String,
     val sourceLabel: String,

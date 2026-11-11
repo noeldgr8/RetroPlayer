@@ -39,7 +39,7 @@ import com.retroplayer.feature.player.draw.drawShadow
 import com.retroplayer.feature.player.draw.roundRectPath
 
 /*
- * EN-01 record finishes and cassette styles (DESIGN.md 14.1). Record functions draw in
+ * EN-01 record finishes and cassette styles. Record functions draw in
  * record-local units (288 x 288, centre 144, 144); cassette functions in shell-local units.
  */
 

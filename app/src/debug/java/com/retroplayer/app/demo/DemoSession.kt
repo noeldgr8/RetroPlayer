@@ -10,7 +10,7 @@ import android.os.Looper
 import android.os.SystemClock
 
 /**
- * DEBUG ONLY. A real MediaSession playing silent placeholder tracks (DESIGN.md 12), so the
+ * DEBUG ONLY. A real MediaSession playing silent placeholder tracks, so the
  * whole pipeline (notification listener -> MediaRepository -> player UI -> transport controls)
  * can be exercised on an emulator with no music app. Never ships: lives in src/debug.
  */

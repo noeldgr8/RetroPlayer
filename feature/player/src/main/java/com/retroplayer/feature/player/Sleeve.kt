@@ -65,7 +65,7 @@ import kotlin.math.PI
 import kotlin.math.sin
 
 /*
- * EN-04 flip the sleeve (DESIGN.md 14.4): tap the sleeve or J-card to turn it over and see
+ * EN-04 flip the sleeve: tap the sleeve or J-card to turn it over and see
  * album details; tap again to turn back. Missing year / track rows are omitted.
  */
 

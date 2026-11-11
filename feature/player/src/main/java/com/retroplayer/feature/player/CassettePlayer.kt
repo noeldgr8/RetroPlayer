@@ -59,11 +59,11 @@ internal val ShellOrigin = Offset(48f, 44f)
 internal val PackLeft = Offset(82f, 62f)
 internal val PackRight = Offset(222f, 62f)
 
-/** Pack diameters for progress p (DESIGN.md 4.2). */
+/** Pack diameters for progress p. */
 private fun packDiameters(p: Float): Pair<Float, Float> = (42f + 34f * (1f - p)) to (42f + 34f * p)
 
 /**
- * Front-on cassette player (DESIGN.md 4.2), 400 x 260 base, height = width * 260 / 400.
+ * Front-on cassette player, 400 x 260 base, height = width * 260 / 400.
  * No paper label and no art behind the window; tape winds from left reel to right reel as
  * [progress] (0..1) advances. Reel speeds follow 28 / r.
  */

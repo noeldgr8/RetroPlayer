@@ -113,7 +113,7 @@ class CrateActions(
 )
 
 /**
- * EN-03 record crate (DESIGN.md 14.3). Compact (cover screen): Shelf | Stats tabs with a
+ * EN-03 record crate. Compact (cover screen): Shelf | Stats tabs with a
  * fanned shelf and a detail view. Expanded (inner screen): shelves left, detail / stats right.
  */
 @OptIn(ExperimentalMaterial3Api::class)

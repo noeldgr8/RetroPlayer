@@ -44,7 +44,7 @@ import com.retroplayer.feature.player.ReelState
 import com.retroplayer.feature.player.SpinState
 import com.retroplayer.feature.player.Turntable
 
-/** EN-02 card formats; design units are half the export size (DESIGN.md 14.2). */
+/** EN-02 card formats; design units are half the export size. */
 enum class ShareFormat(val designW: Int, val designH: Int) {
     Story(540, 960),
     Post(540, 540);

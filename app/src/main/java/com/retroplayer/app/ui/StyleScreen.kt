@@ -54,7 +54,7 @@ import com.retroplayer.feature.player.Turntable
 import com.retroplayer.feature.player.rememberReelState
 import com.retroplayer.feature.player.rememberSpinState
 
-/** EN-01 "Record and tape style" (DESIGN.md 14.1). Changes apply live. */
+/** EN-01 "Record and tape style". Changes apply live. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun StyleScreen(

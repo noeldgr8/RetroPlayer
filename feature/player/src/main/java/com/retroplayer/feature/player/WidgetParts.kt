@@ -30,7 +30,7 @@ import com.retroplayer.feature.player.draw.drawInsetEdge
 import com.retroplayer.feature.player.draw.drawShadow
 
 /*
- * Widget chassis and controls (DESIGN.md 8). All functions draw in dp units at the current
+ * Widget chassis and controls. All functions draw in dp units at the current
  * transform; the widget renderer scales by the bitmap density first.
  */
 

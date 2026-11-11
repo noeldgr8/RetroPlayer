@@ -66,7 +66,7 @@ private const val PAGES = 4
 private const val PAGE_ACCESS = 1
 
 /**
- * Onboarding (DESIGN.md 7.1): welcome, notification access, theme, widget tip.
+ * Onboarding: welcome, notification access, theme, widget tip.
  * Picking a theme on step 3 re-themes this screen live.
  */
 @Composable
@@ -260,7 +260,7 @@ private fun AccessStep() {
     }
 }
 
-/** Illustration of a now-playing notification (design copy from DESIGN.md 7.1, step 2). */
+/** Illustration of a now-playing notification. */
 @Composable
 private fun MockNotification() {
     Surface(

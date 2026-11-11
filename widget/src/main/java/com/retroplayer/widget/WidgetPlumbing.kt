@@ -83,7 +83,7 @@ class MediaCommandAction : ActionCallback {
 }
 
 /**
- * Pushes widget updates from the listener (PRD: pushed on every state change, not polled),
+ * Pushes widget updates from the listener,
  * plus a slow progress refresh every 30 s while playing. Start once from Application.onCreate.
  */
 @Singleton

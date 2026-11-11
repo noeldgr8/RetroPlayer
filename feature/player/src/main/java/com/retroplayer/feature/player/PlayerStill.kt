@@ -20,7 +20,7 @@ import com.retroplayer.core.theme.VinylTokens
 
 /*
  * Still frames of the player objects, drawn with exactly the same layer code as the animated
- * composables. Used for widgets (DESIGN.md 8: pre-render the object into bitmaps per state).
+ * composables. Used for widgets (pre-render the object into bitmaps per state).
  * Both draw in base units at the current transform: scale before calling.
  */
 

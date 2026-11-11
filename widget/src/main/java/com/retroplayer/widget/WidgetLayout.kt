@@ -3,7 +3,7 @@ package com.retroplayer.widget
 import com.retroplayer.core.theme.PlayerStyle
 import kotlin.math.min
 
-/** The three designed sizes (DESIGN.md 8), in dp. */
+/** The three designed sizes, in dp. */
 enum class WidgetSize(val w: Float, val h: Float) {
     Small(170f, 170f),
     Medium(360f, 170f),
@@ -35,7 +35,7 @@ data class DpRect(val x: Float, val y: Float, val w: Float, val h: Float)
 data class ControlSpot(val control: Control, val face: DpRect, val margin: Float)
 
 /**
- * Positions from DESIGN.md 8.1 / 8.2 at the design size, stretched to the real widget size:
+ * Positions at the design size, stretched to the real widget size:
  * positions scale per axis, the object scales uniformly, controls keep their dp size
  * (touch targets). Every coordinate below is in the real widget's dp.
  */

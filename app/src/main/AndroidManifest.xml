@@ -4,6 +4,13 @@
     <!-- Needed to find and launch Spotify from "Open Spotify". -->
     <queries>
         <package android:name="com.spotify.music" />
+        <!-- Music apps, so "Playing from" can show their names instead of package ids. -->
+        <intent>
+            <action android:name="android.media.browse.MediaBrowserService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MEDIA_BUTTON" />
+        </intent>
     </queries>
 
     <application

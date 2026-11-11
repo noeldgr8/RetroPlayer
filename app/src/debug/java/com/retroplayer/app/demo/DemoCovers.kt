@@ -9,7 +9,7 @@ import android.graphics.Path
 import android.graphics.Shader
 import kotlin.random.Random
 
-/** DEBUG ONLY. The three placeholder covers from DESIGN.md 12 (bright, dark, busy). */
+/** DEBUG ONLY. The three placeholder covers (bright, dark, busy). */
 internal object DemoCovers {
 
     fun bright(size: Int): Bitmap = draw(size) { c, s, p ->

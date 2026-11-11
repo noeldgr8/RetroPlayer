@@ -30,7 +30,7 @@ import com.retroplayer.feature.player.Turntable
 import com.retroplayer.feature.player.rememberReelState
 import com.retroplayer.feature.player.rememberSpinState
 
-/** Theme picker with live preview (DESIGN.md 7.5). Tapping a card re-themes the whole screen. */
+/** Theme picker with live preview. Tapping a card re-themes the whole screen. */
 @Composable
 fun ThemePickerScreen(
     current: RetroTheme,

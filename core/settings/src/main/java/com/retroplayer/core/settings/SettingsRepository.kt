@@ -28,16 +28,16 @@ import javax.inject.Singleton
 enum class LightDark { FollowSystem, AlwaysLight, AlwaysDark }
 enum class AnimationLevel { Full, Reduced, Off }
 
-/** EN-01 settings (DESIGN.md 14.1). */
+/** EN-01 settings. */
 enum class RecordMode { Automatic, AlwaysClassic, Favourite }
 enum class CassetteMode { Automatic, AlwaysClear, Favourite }
 enum class LabelChoice { Automatic, Ruled, Printed, Handwritten }
 
-/** EN-05 settings (DESIGN.md 14.5). */
+/** EN-05 settings. */
 enum class FoldedLayout { Standard, MiniDeck }
 enum class Thumb { Left, Right }
 
-/** Settings with the defaults from DESIGN.md 7.4 and 14.7. */
+/** All app settings with their defaults. */
 data class AppSettings(
     val theme: RetroTheme = RetroTheme.VinylLight,
     val lightDark: LightDark = LightDark.FollowSystem,
@@ -171,7 +171,7 @@ class SettingsRepository @Inject constructor(
     private inline fun <reified E : Enum<E>> enumOrDefault(name: String?, default: E): E =
         enumValues<E>().firstOrNull { it.name == name } ?: default
 
-    // --- Per-widget configuration (DESIGN.md 8.4), keyed by appWidgetId ---------------------
+    // --- Per-widget configuration, keyed by appWidgetId ---------------------
 
     private fun widgetThemeKey(id: Int) = stringPreferencesKey("widget_theme_$id")
     private fun widgetWallpaperKey(id: Int) = booleanPreferencesKey("widget_wallpaper_$id")

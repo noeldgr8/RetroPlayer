@@ -11,7 +11,7 @@ import androidx.palette.graphics.Palette
 import kotlin.math.abs
 import kotlin.math.min
 
-/** EN-01 vinyl finishes (DESIGN.md 14.1). */
+/** EN-01 vinyl finishes. */
 enum class VinylFinish { Classic, Translucent, Marble, Splatter, Picture }
 
 /** EN-01 cassette shell and reel styles. Clear is the v1 look. */
@@ -54,7 +54,7 @@ data class ObjectLook(
     }
 }
 
-/** Automatic choices (DESIGN.md 14.1 table): same album always gives the same result. */
+/** Automatic choices: same album always gives the same result. */
 fun AlbumPalette.autoFinish(): VinylFinish = when {
     dominantLuminance < 0.08f -> VinylFinish.Classic
     variety <= 2 -> VinylFinish.Translucent

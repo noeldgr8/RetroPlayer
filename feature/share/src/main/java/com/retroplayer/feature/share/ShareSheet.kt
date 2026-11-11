@@ -60,7 +60,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
- * EN-02 share sheet (DESIGN.md 14.2): format toggle, live preview, Save image and Share.
+ * EN-02 share sheet: format toggle, live preview, Save image and Share.
  * The PNG is rendered on the phone and handed to the Android share sheet; the app uploads nothing.
  */
 @OptIn(ExperimentalMaterial3Api::class)

@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 enum class PlayerStyle { Vinyl, Cassette }
 
 /**
- * Colours for the player objects (design-tokens.json > themes.<id>.player).
+ * Colours for the player objects.
  * CSS gradients from the token file are stored as their colour stops; the drawing code in
  * :feature:player turns them into Brushes at the right geometry.
  */

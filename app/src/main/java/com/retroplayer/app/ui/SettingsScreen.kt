@@ -54,7 +54,7 @@ import com.retroplayer.feature.player.RetroIcons
 
 private enum class SettingsDialog { None, LightDark, Privacy, Licences, ClearCrate }
 
-/** Settings (DESIGN.md 7.4). Every change is saved immediately. */
+/** Settings. Every change is saved immediately. */
 @Composable
 fun SettingsScreen(
     settings: AppSettings,

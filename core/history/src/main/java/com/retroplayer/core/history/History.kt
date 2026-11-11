@@ -34,7 +34,7 @@ import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** One logged play (DESIGN.md 14.3). Stored only on the phone. */
+/** One logged play. Stored only on the phone. */
 @Entity(tableName = "plays", indices = [Index("artist", "album"), Index("startedAt")])
 data class PlayEntry(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,

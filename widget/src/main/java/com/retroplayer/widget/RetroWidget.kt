@@ -62,7 +62,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * The RetroPlayer home screen widget (DESIGN.md 8). The widget is the machine: chassis,
+ * The RetroPlayer home screen widget. The widget is the machine: chassis,
  * object art and controls are one pre-rendered piece; title, artist and the empty-state
  * button stay live. One implementation serves the Small, Medium and Large receivers and
  * picks the nearest designed layout for its real size.
@@ -112,7 +112,7 @@ internal fun resolvePrimary(context: Context, theme: RetroTheme, config: WidgetC
         theme.colorScheme.primary
     }
 
-/** PRD: album art in widgets is scaled to about 300 x 300 px. */
+/** Album art in widgets is scaled to about 300 x 300 px. */
 private fun Bitmap.forWidget(): ImageBitmap {
     val max = 300
     val scaled = if (width > max || height > max) {

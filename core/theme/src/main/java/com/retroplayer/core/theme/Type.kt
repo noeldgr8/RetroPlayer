@@ -23,7 +23,7 @@ object RetroFonts {
         if (style == PlayerStyle.Vinyl) Fraunces else Ui
 }
 
-/** Type scale from DESIGN.md section 3. */
+/** Type scale. */
 object RetroType {
     fun appName(display: FontFamily, inner: Boolean) = TextStyle(
         fontFamily = display,

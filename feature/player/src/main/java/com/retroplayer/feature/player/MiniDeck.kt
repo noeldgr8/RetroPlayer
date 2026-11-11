@@ -48,7 +48,7 @@ import com.retroplayer.core.theme.PlayerStyle
 import com.retroplayer.core.theme.RetroType
 
 /*
- * EN-05 cover-screen mini deck (DESIGN.md 14.5): one-thumb layout for the folded phone.
+ * EN-05 cover-screen mini deck: one-thumb layout for the folded phone.
  * Every interactive control sits in the bottom half; the object takes tap (play / pause)
  * and horizontal swipe (next / previous).
  */

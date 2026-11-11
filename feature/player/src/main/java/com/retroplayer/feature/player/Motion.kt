@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.first
 /*
  * Rotation is driven by accumulating angle += dt * angularVelocity on each frame, where the
  * velocity itself is animated. That gives smooth spin-up / spin-down and lets reel rates change
- * continuously without the snap a restartable infiniteRepeatable would cause (DESIGN.md 9).
+ * continuously without the snap a restartable infiniteRepeatable would cause.
  *
  * Hold these states in a ViewModel so the angle survives fold / unfold and recreation.
  */

@@ -65,9 +65,9 @@
     <string name="sound_effects_supporting">Needle drop and key clunk, never over loud music</string>
     <string name="privacy">Privacy</string>
     <string name="privacy_supporting">No data leaves your phone</string>
-    <string name="privacy_body">RetroPlayer reads the current track, artist and artwork from Android\'s media controls. It has no account, makes no network calls with your data, and stores only your settings on this phone.</string>
+    <string name="privacy_body">RetroPlayer reads the current track, artist and artwork from Android\'s media controls. It has no account, makes no network calls with your data, and stores only your settings and, if you keep it on, your listening history, on this phone.</string>
     <string name="licences">Open-source licences</string>
-    <string name="licences_body">RetroPlayer is built with Kotlin, Kotlin coroutines, Android Jetpack (Compose, Material 3, DataStore, WindowManager, Palette) and Dagger Hilt, all under the Apache License 2.0.</string>
+    <string name="licences_body">RetroPlayer is built with Kotlin, Kotlin coroutines, Android Jetpack (Compose, Material 3, Glance, Room, DataStore, WindowManager, Palette) and Dagger Hilt, all under the Apache License 2.0. RetroPlayer itself is open source under the MIT License.</string>
 
     <string name="theme_title">Theme</string>
     <string name="match_system">Match system light and dark</string>

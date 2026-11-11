@@ -59,7 +59,7 @@ private fun playAngle(progress: Float) =
     RetroMotion.TONEARM_PLAY_DEG + 8f * progress.coerceIn(0f, 1f)
 
 /**
- * Top-down turntable (DESIGN.md 4.1), drawn in a 400 x 400 base and scaled uniformly.
+ * Top-down turntable, drawn in a 400 x 400 base and scaled uniformly.
  * Width decides size; height = width.
  *
  * Layers: static base (cached) -> rotating record (graphicsLayer rotation only) -> static

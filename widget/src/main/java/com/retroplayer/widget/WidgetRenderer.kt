@@ -33,7 +33,7 @@ import com.retroplayer.feature.player.drawWidgetKnob
 import kotlin.math.roundToInt
 
 /**
- * Pre-renders widget art with the app's own drawing code (DESIGN.md 8): one background
+ * Pre-renders widget art with the app's own drawing code: one background
  * bitmap per widget (chassis + object + indicator + key well) and small up / pressed bitmaps
  * per knob or key. Text stays live in the Glance layout.
  *

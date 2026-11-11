@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 
-/** The four themes. [id] matches design-tokens.json and is what gets persisted. */
+/** The four themes. [id] matches the design tokens and is what gets persisted. */
 enum class RetroTheme(
     val id: String,
     val style: PlayerStyle,
@@ -125,7 +125,7 @@ private fun animateColorScheme(t: ColorScheme): ColorScheme = t.copy(
     surfaceContainerHighest = animC(t.surfaceContainerHighest),
 )
 
-/** Motion values from design-tokens.json > motion. */
+/** Motion values from the design tokens. */
 object RetroMotion {
     const val VINYL_REVOLUTION_MS = 1800
     const val TONEARM_MOVE_MS = 600

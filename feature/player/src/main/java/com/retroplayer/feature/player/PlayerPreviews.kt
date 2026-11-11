@@ -17,7 +17,7 @@ import com.retroplayer.core.theme.RetroTheme
 import com.retroplayer.core.theme.VinylDarkTokens
 import com.retroplayer.core.theme.VinylLightTokens
 
-// Placeholder sample content from DESIGN.md 12. Previews only; never ship.
+// Placeholder sample content. Previews only; never ship.
 // TODO: add the three sample covers as vector drawables in a debug source set.
 internal val SampleSaffron = PlayerUiState(
     title = "Saffron Hours",

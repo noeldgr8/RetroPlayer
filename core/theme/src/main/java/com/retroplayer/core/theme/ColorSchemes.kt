@@ -5,7 +5,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
 /*
- * Roles listed in design-tokens.json (primary, containers, background, surface*, on*, outline*)
+ * Roles listed in the design tokens (primary, containers, background, surface*, on*, outline*)
  * are exact. Secondary, tertiary and inverse roles are hand-derived from the primary hue in the
  * spirit of the Material Theme Builder; re-run the Theme Builder before release if design wants
  * them exact. Error roles use the M3 baseline.

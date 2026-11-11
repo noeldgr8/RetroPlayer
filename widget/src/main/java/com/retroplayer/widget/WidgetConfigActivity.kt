@@ -80,7 +80,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Widget configuration (DESIGN.md 8.4): opens when a widget is added and from Reconfigure.
+ * Widget configuration: opens when a widget is added and from Reconfigure.
  * Saves the theme per appWidgetId.
  */
 @AndroidEntryPoint
