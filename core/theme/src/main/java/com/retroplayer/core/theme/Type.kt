@@ -7,13 +7,14 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
 /**
- * Fonts. TODO(fonts): bundle Roboto Flex, Fraunces (600) and Caveat as res/font files in this
- * module (or wire Google downloadable fonts) and swap these placeholders. Until then Fraunces
- * falls back to the system serif and Roboto Flex to the system sans.
+ * Fonts. All text uses the device's own font (FontFamily.Default follows the system font,
+ * including Samsung's One UI font and any font picked in the phone's display settings).
  */
 object RetroFonts {
     val Ui: FontFamily = FontFamily.Default
-    val Fraunces: FontFamily = FontFamily.Serif
+
+    /** Display headings (track titles, headlines). Device font, same as [Ui]. */
+    val Fraunces: FontFamily = FontFamily.Default
 
     /** Caveat (hand-written cassette labels); system cursive until the font is bundled. */
     val Caveat: FontFamily = FontFamily.Cursive
