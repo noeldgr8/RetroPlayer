@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vinyl Light turntable (bare): platter, record with a bright label, tonearm on the record. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp" android:height="160dp"
+    android:viewportWidth="400" android:viewportHeight="400">
+    <path android:fillColor="#C3C7CC" android:pathData="M170,40a150,150 0,1 1,0 300a150,150 0,1 1,0 -300z" />
+    <path android:fillColor="#161616" android:pathData="M170,46a144,144 0,1 1,0 288a144,144 0,1 1,0 -288z" />
+    <path android:fillColor="#00000000" android:strokeColor="#262626" android:strokeWidth="2" android:pathData="M170,90a100,100 0,1 1,0 200a100,100 0,1 1,0 -200z" />
+    <path android:fillColor="#FFD23F" android:pathData="M170,130a60,60 0,1 1,0 120a60,60 0,1 1,0 -120z" />
+    <path android:fillColor="#FF8C42" android:pathData="M150,150a28,28 0,1 1,0 56a28,28 0,1 1,0 -56z" />
+    <path android:fillColor="#F25F8C" android:pathData="M190,170a26,26 0,1 1,0 52a26,26 0,1 1,0 -52z" />
+    <path android:fillColor="#8E949B" android:pathData="M170,184a6,6 0,1 1,0 12a6,6 0,1 1,0 -12z" />
+    <path android:fillColor="#B4B9C0" android:pathData="M350,32a28,28 0,1 1,0 56a28,28 0,1 1,0 -56z" />
+    <path android:strokeColor="#C9CDD2" android:strokeWidth="6" android:strokeLineCap="round" android:pathData="M350,60L260,282" />
+    <path android:fillColor="#2A2A2A" android:pathData="M248,270h24v32h-24z" />
+    <path android:fillColor="#7D838A" android:pathData="M350,52a8,8 0,1 1,0 16a8,8 0,1 1,0 -16z" />
+</vector>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_small_name">RetroPlayer · Small</string>
+    <string name="widget_medium_name">RetroPlayer · Medium</string>
+    <string name="widget_large_name">RetroPlayer · Large</string>
+    <string name="widget_small_description">Record or cassette with a start / stop control</string>
+    <string name="widget_medium_description">Now playing with previous, play and next</string>
+    <string name="widget_large_description">The full player with progress</string>
+
+    <string name="widget_nothing_playing">Nothing playing</string>
+    <string name="widget_start_a_song">Start a song in Spotify</string>
+    <string name="widget_open_spotify">Open Spotify</string>
+
+    <string name="key_rew">REW</string>
+    <string name="key_play">PLAY</string>
+    <string name="key_stop">STOP</string>
+    <string name="key_ff">FF</string>
+    <string name="cd_previous">Previous track</string>
+    <string name="cd_next">Next track</string>
+    <string name="cd_play">Play</string>
+    <string name="cd_pause">Pause</string>
+    <string name="cd_key_rew">Previous track (rewind)</string>
+    <string name="cd_key_ff">Next track (fast forward)</string>
+
+    <!-- Configuration activity -->
+    <string name="widget_theme">Widget theme</string>
+    <string name="cd_close">Close</string>
+    <string name="same_as_app">Same as app</string>
+    <string name="currently">Currently %1$s</string>
+    <string name="follow_wallpaper">Follow wallpaper colours</string>
+    <string name="follow_wallpaper_supporting">Only with Same as app</string>
+    <string name="add_widget">Add widget</string>
+    <string name="save_widget">Save</string>
+</resources>

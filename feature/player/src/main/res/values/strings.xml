@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="retro_app_name">RetroPlayer</string>
+    <string name="playing_from">Playing from %1$s</string>
+    <string name="caption_sleeve">Sleeve · %1$s</string>
+    <string name="caption_jcard">J-card · %1$s</string>
+
+    <string name="cd_settings">Settings</string>
+    <string name="cd_seek">Seek</string>
+    <string name="cd_previous">Previous track</string>
+    <string name="cd_next">Next track</string>
+    <string name="cd_play">Play</string>
+    <string name="cd_pause">Pause</string>
+    <string name="cd_key_rew">Previous track (rewind)</string>
+    <string name="cd_key_ff">Next track (fast forward)</string>
+    <string name="state_pressed">Pressed</string>
+    <string name="state_up">Not pressed</string>
+
+    <string name="key_rew">REW</string>
+    <string name="key_play">PLAY</string>
+    <string name="key_stop">STOP</string>
+    <string name="key_ff">FF</string>
+</resources>

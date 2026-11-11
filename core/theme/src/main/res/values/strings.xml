@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="theme_vinyl_light">Vinyl Light</string>
+    <string name="theme_vinyl_dark">Vinyl Dark</string>
+    <string name="theme_cassette_light">Cassette Light</string>
+    <string name="theme_cassette_dark">Cassette Dark</string>
+</resources>
