@@ -45,6 +45,11 @@ import com.retroplayer.app.PlayerViewModel
 import com.retroplayer.core.settings.AnimationLevel
 import com.retroplayer.core.settings.AppSettings
 import com.retroplayer.core.settings.LightDark
+import com.retroplayer.core.settings.FoldedLayout
+import com.retroplayer.core.settings.Thumb
+import com.retroplayer.feature.crate.CrateActions
+import com.retroplayer.feature.crate.CrateScreen
+import com.retroplayer.feature.share.ShareSheet
 import com.retroplayer.core.media.NowPlaying
 import com.retroplayer.core.media.SPOTIFY_PACKAGE
 import com.retroplayer.core.theme.RetroPlayerTheme
@@ -64,6 +69,8 @@ private enum class Page(val parent: Page?) {
     Main(null),
     Settings(Main),
     Theme(Settings),
+    Style(Settings),
+    Crate(Main),
 }
 
 private enum class MainState { Access, Empty, Player }
@@ -113,6 +120,7 @@ fun RetroRoot(vm: PlayerViewModel, hinge: HingePx?) {
                             hinge = hinge,
                             animate = animate,
                             onSettings = { page = Page.Settings },
+                            onCrate = { page = Page.Crate },
                             onChooseSource = { showSources = true },
                         )
                         Page.Settings -> SettingsScreen(
@@ -121,6 +129,8 @@ fun RetroRoot(vm: PlayerViewModel, hinge: HingePx?) {
                             sourceLabel = sourceLabel(vm, settings.preferredSource),
                             onBack = { page = Page.Main },
                             onOpenTheme = { page = Page.Theme },
+                            onOpenStyle = { page = Page.Style },
+                            onClearCrate = vm::clearCrate,
                             onChooseSource = { showSources = true },
                             onUpdate = vm::updateSettings,
                         )
@@ -134,6 +144,37 @@ fun RetroRoot(vm: PlayerViewModel, hinge: HingePx?) {
                             onFollowSystem = { vm.setFollowSystem(it, theme) },
                             onTintFromArt = { on -> vm.updateSettings { it.copy(tintFromArt = on) } },
                         )
+                        Page.Style -> {
+                            val look by vm.look.collectAsStateWithLifecycle()
+                            val art = remember(nowPlaying?.art) { nowPlaying?.art?.asImageBitmap() }
+                            StyleScreen(
+                                settings = settings,
+                                theme = theme,
+                                look = look,
+                                art = art,
+                                songTitle = nowPlaying?.title,
+                                animate = animate,
+                                onBack = { page = Page.Settings },
+                                onUpdate = vm::updateSettings,
+                            )
+                        }
+                        Page.Crate -> {
+                            val entries by vm.crate.collectAsStateWithLifecycle()
+                            CrateScreen(
+                                entries = entries,
+                                keepHistory = settings.keepHistory,
+                                animate = animate,
+                                actions = remember(vm) {
+                                    CrateActions(
+                                        onBack = { page = Page.Main },
+                                        onToggleLogging = { vm.updateSettings { it.copy(keepHistory = !it.keepHistory) } },
+                                        onClear = vm::clearCrate,
+                                        onDelete = vm::deletePlays,
+                                        onRestore = vm::restorePlays,
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -166,6 +207,7 @@ private fun MainContent(
     hinge: HingePx?,
     animate: Boolean,
     onSettings: () -> Unit,
+    onCrate: () -> Unit,
     onChooseSource: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -184,7 +226,7 @@ private fun MainContent(
                 onChooseSource = onChooseSource,
             )
             MainState.Player -> nowPlaying?.let { np ->
-                PlayerRoute(np, vm, settings, hinge, animate, onSettings)
+                PlayerRoute(np, vm, settings, hinge, animate, onSettings, onCrate)
             }
         }
     }
@@ -198,7 +240,9 @@ private fun PlayerRoute(
     hinge: HingePx?,
     animate: Boolean,
     onSettings: () -> Unit,
+    onCrate: () -> Unit,
 ) {
+    var showShare by rememberSaveable { mutableStateOf(false) }
     // Position is extrapolated between session updates; 4 Hz is plenty for text and tape packs.
     val position by produceState(np.estimatedPositionMs(), np) {
         value = np.estimatedPositionMs()
@@ -208,6 +252,7 @@ private fun PlayerRoute(
         }
     }
     val art = remember(np.art) { np.art?.asImageBitmap() }
+    val look by vm.look.collectAsStateWithLifecycle()
     val state = PlayerUiState(
         title = np.title,
         artist = np.artist,
@@ -220,8 +265,11 @@ private fun PlayerRoute(
         canSeek = np.canSeek,
         canPrevious = np.canSkipPrevious,
         canNext = np.canSkipNext,
+        look = look,
+        year = np.year,
+        trackNumber = np.trackNumber,
     )
-    val actions = remember(vm, onSettings) {
+    val actions = remember(vm, onSettings, onCrate) {
         PlayerActions(
             onSeek = vm::seekTo,
             onPrevious = vm::previous,
@@ -229,6 +277,8 @@ private fun PlayerRoute(
             onPause = vm::pause,
             onNext = vm::next,
             onSettings = onSettings,
+            onShare = { showShare = true },
+            onCrate = onCrate,
         )
     }
 
@@ -239,14 +289,21 @@ private fun PlayerRoute(
         val band = hinge?.let {
             with(density) { HingeBand(it.top.toDp() - 12.dp, it.bottom.toDp() + 12.dp) }
         }
-        val layout = selectPlayerLayout(maxWidth, maxHeight, tabletop = band != null)
+        val layout = selectPlayerLayout(
+            maxWidth, maxHeight, tabletop = band != null,
+            miniDeck = settings.foldedLayout == FoldedLayout.MiniDeck,
+        )
         PlayerScreen(
             layout = layout,
             state = state,
             actions = actions,
             motion = PlayerMotion(vm.spin, vm.reels, animate),
             hinge = band,
+            thumbRight = settings.thumb == Thumb.Right,
         )
+    }
+    if (showShare) {
+        ShareSheet(state, onDismiss = { showShare = false })
     }
 }
 

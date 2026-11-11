@@ -15,6 +15,9 @@ object RetroFonts {
     val Ui: FontFamily = FontFamily.Default
     val Fraunces: FontFamily = FontFamily.Serif
 
+    /** Caveat (hand-written cassette labels); system cursive until the font is bundled. */
+    val Caveat: FontFamily = FontFamily.Cursive
+
     fun displayFor(style: PlayerStyle): FontFamily =
         if (style == PlayerStyle.Vinyl) Fraunces else Ui
 }

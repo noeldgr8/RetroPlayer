@@ -20,4 +20,17 @@
     <string name="key_play">PLAY</string>
     <string name="key_stop">STOP</string>
     <string name="key_ff">FF</string>
+    <string name="cd_crate">Record crate</string>
+    <string name="cd_share">Share</string>
+    <string name="mini_hint">Tap to pause · swipe for next or previous</string>
+    <string name="mini_hint_paused">Tap to play · swipe for next or previous</string>
+    <string name="cd_sleeve_front">Album sleeve. Tap to see album details</string>
+    <string name="cd_sleeve_back">Sleeve back. Tap to show the cover</string>
+    <string name="sleeve_now_playing">Now playing</string>
+    <string name="sleeve_track">Track</string>
+    <string name="sleeve_released">Released</string>
+    <string name="jcard_now">now: %1$s</string>
+    <string name="jcard_track">track %1$d</string>
+    <string name="unknown_album">Unknown album</string>
+    <string name="unknown_artist">Unknown artist</string>
 </resources>

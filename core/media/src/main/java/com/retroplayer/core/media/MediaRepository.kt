@@ -168,6 +168,8 @@ class MediaRepository @Inject constructor(
             canSkipNext = can(PlaybackState.ACTION_SKIP_TO_NEXT),
             canSkipPrevious = can(PlaybackState.ACTION_SKIP_TO_PREVIOUS),
             canSeek = actions and PlaybackState.ACTION_SEEK_TO != 0L,
+            year = metadata?.getLong(MediaMetadata.METADATA_KEY_YEAR)?.toInt()?.takeIf { it > 0 },
+            trackNumber = metadata?.getLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER)?.toInt()?.takeIf { it > 0 },
         )
     }
 

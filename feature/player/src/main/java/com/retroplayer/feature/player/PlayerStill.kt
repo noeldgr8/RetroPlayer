@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.retroplayer.core.theme.CassetteTokens
 import com.retroplayer.core.theme.RetroMotion
+import com.retroplayer.core.theme.ObjectLook
 import com.retroplayer.core.theme.VinylTokens
 
 /*
@@ -33,6 +34,7 @@ fun DrawScope.drawTurntableStill(
     idle: Boolean = false,
     bare: Boolean = true,
     progress: Float = 0f,
+    look: ObjectLook = ObjectLook.Default,
 ) {
     val label = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold)
     val t33 = textMeasurer.measure("33", label, density = Density(1f))
@@ -41,7 +43,7 @@ fun DrawScope.drawTurntableStill(
     drawTurntableBase(tokens, bare, idle)
     if (!idle) {
         translate(26f, 46f) {
-            drawRecord(tokens, art, labelColor)
+            drawRecordLook(tokens, art, labelColor, look)
             drawCircle(Brush.sweepGradient(*SheenStops, center = Offset(144f, 144f)), radius = 144f, center = Offset(144f, 144f))
         }
     }
@@ -57,7 +59,10 @@ fun DrawScope.drawCassetteStill(
     playing: Boolean,
     textMeasurer: TextMeasurer,
     bare: Boolean = true,
+    look: ObjectLook = ObjectLook.Default,
+    songTitle: String? = null,
 ) {
+    val shell = shellColors(tokens, look)
     val brand = textMeasurer.measure(
         "RETROPLAYER",
         TextStyle(fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.24.em),
@@ -74,11 +79,16 @@ fun DrawScope.drawCassetteStill(
         density = Density(1f),
     )
     val p = progress.coerceIn(0f, 1f)
-    drawCassetteBase(tokens, bare, brand, stereo)
+    drawCassetteBase(tokens, bare, brand, stereo, shell.fill)
     drawTape(tokens, p)
+    val songLabel = look.label
+    if (songLabel != null && !songTitle.isNullOrBlank()) {
+        val text = measureSongLabel(textMeasurer, songLabel, songTitle)
+        translate(ShellOrigin.x, ShellOrigin.y) { drawSongLabel(songLabel, look.colors, text) }
+    }
     for (c in listOf(PackLeft, PackRight)) {
         val topLeft = ShellOrigin + c - Offset(20f, 20f)
-        translate(topLeft.x, topLeft.y) { drawReelHub(tokens) }
+        translate(topLeft.x, topLeft.y) { drawReelHub(tokens, shell.hub, shell.cogGap) }
     }
     drawCassetteTop(tokens, bare, indicator = if (playing) 1f else 0f, playLabel = play)
 }

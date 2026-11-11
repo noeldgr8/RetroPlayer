@@ -76,6 +76,9 @@ class PlayerActions(
     val onPause: () -> Unit,
     val onNext: () -> Unit,
     val onSettings: () -> Unit,
+    /** v1.1: share card (EN-02) and record crate (EN-03). */
+    val onShare: () -> Unit = {},
+    val onCrate: () -> Unit = {},
 )
 
 /**

@@ -37,6 +37,9 @@ dependencies {
     implementation(project(":feature:player"))
     implementation(project(":core:settings"))
     implementation(project(":widget"))
+    implementation(project(":feature:share"))
+    implementation(project(":feature:crate"))
+    implementation(project(":core:history"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

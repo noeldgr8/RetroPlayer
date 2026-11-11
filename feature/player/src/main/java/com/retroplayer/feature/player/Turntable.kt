@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import com.retroplayer.core.theme.RetroMotion
+import com.retroplayer.core.theme.ObjectLook
 import com.retroplayer.core.theme.VinylTokens
 import com.retroplayer.feature.player.draw.circlePath
 import com.retroplayer.feature.player.draw.cssLinear
@@ -78,6 +79,7 @@ fun Turntable(
     animate: Boolean = true,
     spin: SpinState = rememberSpinState(),
     labelColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    look: ObjectLook = ObjectLook.Default,
 ) {
     val playing = isPlaying && !idle
     VinylSpinEffect(spin, playing, animate)
@@ -108,7 +110,7 @@ fun Turntable(
                     .graphicsLayer { rotationZ = spin.angle }
                     .drawWithCache {
                         val s = size.width / 288f
-                        onDrawBehind { scale(s, Offset.Zero) { drawRecord(tokens, art, labelColor) } }
+                        onDrawBehind { scale(s, Offset.Zero) { drawRecordLook(tokens, art, labelColor, look) } }
                     },
             )
             // 4: static sheen, which is what sells the rotation

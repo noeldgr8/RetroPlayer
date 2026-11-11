@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import com.retroplayer.core.theme.CassetteTokens
+import com.retroplayer.core.theme.ObjectLook
 import com.retroplayer.core.theme.RetroTheme
 import com.retroplayer.core.theme.VinylTokens
 import com.retroplayer.feature.player.IconPaths
@@ -54,6 +55,8 @@ class WidgetRenderer(private val context: Context) {
         art: ImageBitmap?,
         progress: Float,
         labelColor: Color,
+        look: ObjectLook = ObjectLook.Default,
+        songTitle: String? = null,
     ): Bitmap = render(layout.wDp, layout.hDp) {
         val playing = layout.mode == WidgetMode.Playing
         val idle = layout.mode == WidgetMode.Empty
@@ -66,6 +69,7 @@ class WidgetRenderer(private val context: Context) {
                         drawTurntableStill(
                             t, art, playing, labelColor, measurer,
                             idle = idle, bare = true, progress = progress,
+                            look = look,
                         )
                     }
                 }
@@ -74,7 +78,10 @@ class WidgetRenderer(private val context: Context) {
                 drawCassetteChassis(t, Size(layout.wDp, layout.hDp))
                 translate(ox, oy) {
                     scale(ow / 400f, Offset.Zero) {
-                        drawCassetteStill(t, if (idle) 0f else progress, playing, measurer, bare = true)
+                        drawCassetteStill(
+                            t, if (idle) 0f else progress, playing, measurer, bare = true,
+                            look = look, songTitle = songTitle,
+                        )
                     }
                 }
                 layout.indicator?.let { (cx, cy, d) -> drawIndicatorLight(t, Offset(cx, cy), d, on = playing) }

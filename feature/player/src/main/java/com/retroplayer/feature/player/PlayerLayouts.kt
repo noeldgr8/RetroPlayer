@@ -1,5 +1,6 @@
 package com.retroplayer.feature.player
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,6 +27,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
@@ -40,17 +43,17 @@ import com.retroplayer.core.theme.PlayerStyle
 import com.retroplayer.core.theme.RetroType
 
 /** DESIGN.md section 2 layouts, plus the two undrawn ones from section 11. */
-enum class PlayerLayout { Cover, InnerPortrait, InnerLandscape, Tabletop, CoverLandscape, Minimal }
+enum class PlayerLayout { Cover, InnerPortrait, InnerLandscape, Tabletop, CoverLandscape, Minimal, MiniDeckPortrait, MiniDeckLandscape }
 
 /** Hinge band in this composable's coordinates, already including 12 dp clearance per side. */
 data class HingeBand(val top: Dp, val bottom: Dp)
 
 /** Selection order from DESIGN.md section 2. Never keys off device model. */
-fun selectPlayerLayout(width: Dp, height: Dp, tabletop: Boolean): PlayerLayout = when {
+fun selectPlayerLayout(width: Dp, height: Dp, tabletop: Boolean, miniDeck: Boolean = false): PlayerLayout = when {
     tabletop -> PlayerLayout.Tabletop
     width < 360.dp -> PlayerLayout.Minimal
-    height < 480.dp && width > height -> PlayerLayout.CoverLandscape
-    width < 600.dp -> PlayerLayout.Cover
+    height < 480.dp && width > height -> if (miniDeck) PlayerLayout.MiniDeckLandscape else PlayerLayout.CoverLandscape
+    width < 600.dp -> if (miniDeck) PlayerLayout.MiniDeckPortrait else PlayerLayout.Cover
     width < 840.dp -> PlayerLayout.InnerPortrait
     else -> PlayerLayout.InnerLandscape
 }
@@ -63,6 +66,8 @@ fun PlayerScreen(
     motion: PlayerMotion,
     modifier: Modifier = Modifier,
     hinge: HingeBand? = null,
+    /** EN-05: mini deck puts the controls on this side. */
+    thumbRight: Boolean = true,
 ) {
     Box(modifier.fillMaxSize()) {
         when (layout) {
@@ -72,6 +77,8 @@ fun PlayerScreen(
             PlayerLayout.Tabletop -> TabletopLayout(state, actions, motion, hinge)
             PlayerLayout.CoverLandscape -> CoverLandscapeLayout(state, actions, motion)
             PlayerLayout.Minimal -> MinimalLayout(state, actions, motion)
+            PlayerLayout.MiniDeckPortrait -> MiniDeckPortrait(state, actions, motion, thumbRight)
+            PlayerLayout.MiniDeckLandscape -> MiniDeckLandscape(state, actions, motion, thumbRight)
         }
     }
 }
@@ -85,11 +92,20 @@ private val BottomAndSides = WindowInsetsSides.Bottom + WindowInsetsSides.Horizo
 @Composable
 private fun CoverLayout(state: PlayerUiState, actions: PlayerActions, motion: PlayerMotion) {
     val retro = LocalRetroStyle.current
+    var sleeveOverlay by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing.only(TopAndSides))) {
-        RetroTopBar(actions.onSettings, startPadding = 24.dp, endPadding = 8.dp)
+        RetroTopBar(actions.onSettings, onCrate = actions.onCrate, onShare = actions.onShare, startPadding = 24.dp, endPadding = 8.dp)
         ScaledStage(465f, 368f, Modifier.weight(1f).fillMaxWidth().heightIn(min = 220.dp)) {
             if (retro.style == PlayerStyle.Vinyl) {
-                AlbumArt(state.art, Modifier.at(20f, 14f).size(d(190)), corner = 6.dp, rotation = -7f)
+                // EN-04: the sleeve peeks out; tapping brings it forward and flips it.
+                val sleeveLabel = androidx.compose.ui.res.stringResource(R.string.cd_sleeve_front)
+                AlbumArt(
+                    state.art,
+                    Modifier.at(20f, 14f).size(d(190))
+                        .clickable(onClickLabel = sleeveLabel) { sleeveOverlay = true },
+                    corner = 6.dp, rotation = -7f,
+                )
                 PlayerObject(state, motion, d(340), Modifier.at(95f, 18f))
             } else {
                 PlayerObject(state, motion, d(401), Modifier.at(32f, 54f))
@@ -110,6 +126,10 @@ private fun CoverLayout(state: PlayerUiState, actions: PlayerActions, motion: Pl
                 .padding(start = 28.dp, end = 28.dp, top = 16.dp, bottom = 22.dp),
         )
     }
+    if (sleeveOverlay) {
+        SleeveOverlay(state, jCard = false, animate = motion.animate, onDismiss = { sleeveOverlay = false })
+    }
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -122,14 +142,14 @@ private fun InnerPortraitLayout(state: PlayerUiState, actions: PlayerActions, mo
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing.only(TopAndSides)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        RetroTopBar(actions.onSettings, inner = true, startPadding = 32.dp, endPadding = 16.dp)
+        RetroTopBar(actions.onSettings, onCrate = actions.onCrate, onShare = actions.onShare, inner = true, startPadding = 32.dp, endPadding = 16.dp)
         ScaledStage(730f, 470f, Modifier.weight(1f).fillMaxWidth().heightIn(min = 240.dp)) {
             if (retro.style == PlayerStyle.Vinyl) {
-                AlbumArt(state.art, Modifier.at(40f, 70f).size(d(200)), corner = 6.dp)
+                FlippableSleeve(state, d(200), 6.dp, jCard = false, animate = motion.animate, modifier = Modifier.at(40f, 70f))
                 Caption(stringResource(R.string.caption_sleeve, state.album), Modifier.at(40f, 286f).widthIn(max = d(220)))
                 PlayerObject(state, motion, d(436), Modifier.at(262f, 14f))
             } else {
-                AlbumArt(state.art, Modifier.at(38f, 70f).size(d(206)), corner = 4.dp, rotation = -3f)
+                FlippableSleeve(state, d(206), 4.dp, jCard = true, animate = motion.animate, modifier = Modifier.at(38f, 70f), rotation = -3f)
                 Caption(stringResource(R.string.caption_jcard, state.album), Modifier.at(40f, 296f).widthIn(max = d(220)))
                 PlayerObject(state, motion, d(428), Modifier.at(266f, 100f))
             }
@@ -159,17 +179,19 @@ private fun InnerPortraitLayout(state: PlayerUiState, actions: PlayerActions, mo
 private fun InnerLandscapeLayout(state: PlayerUiState, actions: PlayerActions, motion: PlayerMotion) {
     val retro = LocalRetroStyle.current
     Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
-        RetroTopBar(actions.onSettings, inner = true, startPadding = 40.dp, endPadding = 16.dp)
+        RetroTopBar(actions.onSettings, onCrate = actions.onCrate, onShare = actions.onShare, inner = true, startPadding = 40.dp, endPadding = 16.dp)
         Row(
             Modifier.weight(1f).fillMaxWidth().padding(start = 40.dp, end = 40.dp, top = 8.dp, bottom = 36.dp),
             horizontalArrangement = Arrangement.spacedBy(40.dp),
         ) {
             Column(Modifier.width(380.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(18.dp)) {
-                AlbumArt(
-                    state.art,
-                    Modifier.weight(1f, fill = false).sizeIn(maxWidth = 220.dp, maxHeight = 220.dp).aspectRatio(1f),
-                    corner = if (retro.style == PlayerStyle.Vinyl) 6.dp else 4.dp,
-                )
+                BoxWithConstraints(Modifier.weight(1f, fill = false).sizeIn(maxWidth = 220.dp, maxHeight = 220.dp).aspectRatio(1f)) {
+                    val vinyl = retro.style == PlayerStyle.Vinyl
+                    FlippableSleeve(
+                        state, min(maxWidth, maxHeight), if (vinyl) 6.dp else 4.dp,
+                        jCard = !vinyl, animate = motion.animate,
+                    )
+                }
                 TrackInfo(
                     state,
                     titleStyle = RetroType.titleLandscape(retro.displayFont),
@@ -218,7 +240,7 @@ private fun TabletopLayout(state: PlayerUiState, actions: PlayerActions, motion:
                 },
             ) {
                 if (retro.style == PlayerStyle.Vinyl) {
-                    AlbumArt(state.art, Modifier.at(196f, 80f).size(d(156)), corner = 6.dp, rotation = -6f)
+                    FlippableSleeve(state, d(156), 6.dp, jCard = false, animate = motion.animate, modifier = Modifier.at(196f, 80f), rotation = -6f)
                     PlayerObject(state, motion, d(300), Modifier.at(334f, 10f))
                 } else {
                     PlayerObject(state, motion, d(420), Modifier.at(274f, 30f))
@@ -261,7 +283,7 @@ private fun CoverLandscapeLayout(state: PlayerUiState, actions: PlayerActions, m
         horizontalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Column(Modifier.weight(1f).fillMaxHeight().padding(bottom = 16.dp)) {
-            RetroTopBar(actions.onSettings, startPadding = 24.dp, endPadding = 8.dp)
+            RetroTopBar(actions.onSettings, onCrate = actions.onCrate, onShare = actions.onShare, startPadding = 24.dp, endPadding = 8.dp)
             Spacer(Modifier.weight(1f))
             TrackInfo(
                 state,

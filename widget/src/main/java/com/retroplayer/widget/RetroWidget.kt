@@ -52,7 +52,9 @@ import com.retroplayer.core.media.NowPlaying
 import com.retroplayer.core.media.SPOTIFY_PACKAGE
 import com.retroplayer.core.settings.AppSettings
 import com.retroplayer.core.settings.WidgetConfig
+import com.retroplayer.core.theme.AlbumPalettes
 import com.retroplayer.core.theme.CassetteTokens
+import com.retroplayer.core.theme.ObjectLook
 import com.retroplayer.core.theme.RetroTheme
 import com.retroplayer.core.theme.VinylTokens
 import dagger.hilt.android.EntryPointAccessors
@@ -146,7 +148,14 @@ private fun WidgetContent(
         if (it.durationMs > 0) (it.estimatedPositionMs().toFloat() / it.durationMs).coerceIn(0f, 1f) else 0f
     } ?: 0f
     val art = remember(nowPlaying?.art) { nowPlaying?.art?.forWidget() }
-    val background = renderer.background(layout, theme, art, progress, theme.colorScheme.primaryContainer)
+    // EN-01: bake the album's finish / shell / label into the object bitmap.
+    val palette = remember(nowPlaying?.albumKey, nowPlaying?.art) {
+        nowPlaying?.art?.let { AlbumPalettes.derive(it, nowPlaying.albumKey) }
+    }
+    val look = if (mode == WidgetMode.Empty) ObjectLook.Default else app.lookFor(palette)
+    val background = renderer.background(
+        layout, theme, art, progress, theme.colorScheme.primaryContainer, look, nowPlaying?.title,
+    )
 
     val (ink, inkVariant, track) = when (val t = theme.playerTokens) {
         is VinylTokens -> Triple(t.widgetInk, t.widgetInkVariant, t.widgetTrack)

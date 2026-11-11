@@ -23,7 +23,14 @@ data class NowPlaying(
     val canSeek: Boolean,
     val shuffle: Boolean = false,
     val repeat: Boolean = false,
+    /** Album release year, when the source app publishes it. */
+    val year: Int? = null,
+    /** Track number on the album, when the source app publishes it. */
+    val trackNumber: Int? = null,
 ) {
+    /** Key for per-album data (palette, crate grouping). */
+    val albumKey: String get() = "$artist|$album"
+
     /** Stable-enough identity for caching per track (widgets, tinting). */
     val trackId: String get() = "$sourcePackage|$title|$artist|$album|$durationMs"
 

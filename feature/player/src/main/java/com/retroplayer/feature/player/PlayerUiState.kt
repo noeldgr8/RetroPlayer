@@ -2,6 +2,7 @@ package com.retroplayer.feature.player
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.ImageBitmap
+import com.retroplayer.core.theme.ObjectLook
 
 /** What the player UI renders. Mapped from core:media's NowPlaying in :app. */
 @Immutable
@@ -17,6 +18,11 @@ data class PlayerUiState(
     val canSeek: Boolean = true,
     val canPrevious: Boolean = true,
     val canNext: Boolean = true,
+    /** EN-01 finish, shell and label for the current album. */
+    val look: ObjectLook = ObjectLook.Default,
+    /** EN-04 sleeve back fields; null rows are omitted. */
+    val year: Int? = null,
+    val trackNumber: Int? = null,
 ) {
     val progress: Float
         get() = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f

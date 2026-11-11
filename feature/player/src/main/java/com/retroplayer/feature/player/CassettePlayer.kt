@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.retroplayer.core.theme.CassetteTokens
 import com.retroplayer.core.theme.RetroMotion
+import com.retroplayer.core.theme.ObjectLook
 import com.retroplayer.feature.player.draw.circlePath
 import com.retroplayer.feature.player.draw.cssLinear
 import com.retroplayer.feature.player.draw.cssRadialAt
@@ -75,7 +76,11 @@ fun CassettePlayer(
     bare: Boolean = false,
     animate: Boolean = true,
     reels: ReelState = rememberReelState(),
+    look: ObjectLook = ObjectLook.Default,
+    /** Shown on the song-name label when [look] has one. */
+    songTitle: String? = null,
 ) {
+    val shell = shellColors(tokens, look)
     val p = progress.coerceIn(0f, 1f)
     val (dL, dR) = packDiameters(p)
     ReelEffect(reels, isPlaying, animate, leftRadius = dL / 2f, rightRadius = dR / 2f)
@@ -103,7 +108,7 @@ fun CassettePlayer(
                     TextStyle(fontSize = 10.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.2.em),
                     density = Density(1f),
                 )
-                onDrawBehind { scale(s, Offset.Zero) { drawCassetteBase(tokens, bare, brand, stereo) } }
+                onDrawBehind { scale(s, Offset.Zero) { drawCassetteBase(tokens, bare, brand, stereo, shell.fill) } }
             },
         )
 
@@ -114,6 +119,21 @@ fun CassettePlayer(
             },
         )
 
+        // EN-01 song-name label strip (off by default), above the tape packs
+        val label = look.label
+        if (label != null && !songTitle.isNullOrBlank()) {
+            Spacer(
+                Modifier.fillMaxSize().drawWithCache {
+                    val text = measureSongLabel(textMeasurer, label, songTitle)
+                    onDrawBehind {
+                        scale(size.width / W, Offset.Zero) {
+                            translate(ShellOrigin.x, ShellOrigin.y) { drawSongLabel(label, look.colors, text) }
+                        }
+                    }
+                },
+            )
+        }
+
         // 10: reel hubs, each in its own rotating layer
         val hubTopLeft = { c: Offset -> ShellOrigin + c - Offset(20f, 20f) }
         val hubL = hubTopLeft(PackLeft)
@@ -123,14 +143,14 @@ fun CassettePlayer(
                 .offset(u * hubL.x, u * hubL.y)
                 .size(u * 40f)
                 .graphicsLayer { rotationZ = reels.left }
-                .drawWithCache { onDrawBehind { scale(size.width / 40f, Offset.Zero) { drawReelHub(tokens) } } },
+                .drawWithCache { onDrawBehind { scale(size.width / 40f, Offset.Zero) { drawReelHub(tokens, shell.hub, shell.cogGap) } } },
         )
         Spacer(
             Modifier
                 .offset(u * hubR.x, u * hubR.y)
                 .size(u * 40f)
                 .graphicsLayer { rotationZ = reels.right }
-                .drawWithCache { onDrawBehind { scale(size.width / 40f, Offset.Zero) { drawReelHub(tokens) } } },
+                .drawWithCache { onDrawBehind { scale(size.width / 40f, Offset.Zero) { drawReelHub(tokens, shell.hub, shell.cogGap) } } },
         )
 
         // 11-14: window gloss, speaker grille, indicator, volume wheel
@@ -153,6 +173,7 @@ internal fun DrawScope.drawCassetteBase(
     bare: Boolean,
     brand: TextLayoutResult,
     stereo: TextLayoutResult,
+    shellFill: Color = t.shell,
 ) {
     if (!bare) {
         val bounds = Rect(0f, 0f, W, H)
@@ -183,7 +204,7 @@ internal fun DrawScope.drawCassetteBase(
         style = Stroke(2f),
     )
     translate(ShellOrigin.x, ShellOrigin.y) {
-        drawRoundRect(t.shell, Offset.Zero, Size(304f, 124f), CornerRadius(8f))
+        drawRoundRect(shellFill, Offset.Zero, Size(304f, 124f), CornerRadius(8f))
     }
 }
 
@@ -222,14 +243,14 @@ private fun DrawScope.drawPack(t: CassetteTokens, c: Offset, r: Float) {
 }
 
 /** Hub-local 40 x 40. Six cog teeth: 14deg of hub colour per 60deg pitch. */
-internal fun DrawScope.drawReelHub(t: CassetteTokens) {
+internal fun DrawScope.drawReelHub(t: CassetteTokens, hub: Color = t.reelHub, cog: Color = t.cogDark) {
     val c = Offset(20f, 20f)
-    drawCircle(t.reelHub, radius = 20f, center = c)
+    drawCircle(hub, radius = 20f, center = c)
     drawCircle(Color.Black.copy(alpha = 0.18f), radius = 19.5f, center = c, style = Stroke(1f))
-    drawCircle(t.cogDark, radius = 12f, center = c)
+    drawCircle(cog, radius = 12f, center = c)
     for (i in 0 until 6) {
         drawArc(
-            color = t.reelHub,
+            color = hub,
             startAngle = i * 60f - 7f,
             sweepAngle = 14f,
             useCenter = true,
@@ -237,7 +258,7 @@ internal fun DrawScope.drawReelHub(t: CassetteTokens) {
             size = Size(24f, 24f),
         )
     }
-    drawCircle(t.cogDark, radius = 7f, center = c)
+    drawCircle(cog, radius = 7f, center = c)
 }
 
 internal fun DrawScope.drawCassetteTop(

@@ -92,6 +92,8 @@ fun RetroTopBar(
     inner: Boolean = false,
     startPadding: Dp = 24.dp,
     endPadding: Dp = 8.dp,
+    onCrate: (() -> Unit)? = null,
+    onShare: (() -> Unit)? = null,
 ) {
     val retro = LocalRetroStyle.current
     Row(
@@ -104,6 +106,17 @@ fun RetroTopBar(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
         )
+        // v1.1 order: Record crate, Share, Settings
+        if (onCrate != null) {
+            IconButton(onClick = onCrate, modifier = Modifier.size(48.dp)) {
+                Icon(RetroIcons.LibraryMusic, stringResource(R.string.cd_crate), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        if (onShare != null) {
+            IconButton(onClick = onShare, modifier = Modifier.size(48.dp)) {
+                Icon(RetroIcons.Share, stringResource(R.string.cd_share), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
         IconButton(onClick = onSettings, modifier = Modifier.size(48.dp)) {
             Icon(
                 Icons.Filled.Settings,
@@ -232,6 +245,7 @@ fun PlayerObject(
                 progress = state.progress,
                 animate = motion.animate,
                 spin = motion.spin,
+                look = state.look,
                 modifier = Modifier.width(width),
             )
             is CassetteTokens -> CassettePlayer(
@@ -241,6 +255,8 @@ fun PlayerObject(
                 bare = bare,
                 animate = motion.animate,
                 reels = motion.reels,
+                look = state.look,
+                songTitle = state.title,
                 modifier = Modifier.width(width),
             )
         }

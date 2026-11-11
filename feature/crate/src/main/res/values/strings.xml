@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crate_title">Record crate</string>
+    <string name="crate_tab_shelf">Shelf</string>
+    <string name="crate_tab_stats">Stats</string>
+    <string name="crate_hint">Swipe to flip through · tap for details</string>
+    <string name="crate_meta">%1$s · %2$s · Last played %3$s</string>
+    <plurals name="crate_plays">
+        <item quantity="one">%d play</item>
+        <item quantity="other">%d plays</item>
+    </plurals>
+    <string name="crate_fact_plays">Plays</string>
+    <string name="crate_fact_last">Last played</string>
+    <string name="crate_fact_time">Listening time</string>
+    <string name="crate_fact_first">First played</string>
+    <string name="crate_played_from">Played from this album</string>
+    <string name="crate_remove_album">Remove from crate</string>
+    <string name="crate_this_week">This week</string>
+    <string name="crate_this_month">This month</string>
+    <string name="crate_listened_week">listened this week · %1$d tracks</string>
+    <string name="crate_listened_month">listened this month · %1$d tracks</string>
+    <string name="crate_top_album">Most played album</string>
+    <string name="crate_top_artist">Top artist</string>
+    <string name="crate_top_track">Top track</string>
+    <string name="crate_empty_title">Your crate is empty</string>
+    <string name="crate_empty_body">Songs you play for more than 30 seconds land here, filed by album.</string>
+    <string name="crate_back_to_player">Back to the player</string>
+    <string name="crate_privacy">Your crate stays on this phone. Nothing is uploaded.</string>
+    <string name="crate_pause">Pause logging</string>
+    <string name="crate_resume">Resume logging</string>
+    <string name="crate_clear">Clear crate</string>
+    <string name="crate_clear_title">Clear the crate?</string>
+    <string name="crate_clear_body">This deletes your whole listening history on this phone. It can\'t be undone.</string>
+    <string name="crate_clear_confirm">Clear</string>
+    <string name="crate_cancel">Cancel</string>
+    <string name="crate_deleted">Removed \"%1$s\"</string>
+    <string name="crate_undo">Undo</string>
+    <string name="crate_paused_banner">Logging is paused</string>
+    <string name="crate_no_stats">Nothing played in this period yet.</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_more">More options</string>
+    <string name="cd_album_sleeve">%1$s by %2$s</string>
+</resources>
