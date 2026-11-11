@@ -19,9 +19,14 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      # The runner's SDK does not ship platform 37; install it (accepts licences).
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager --install "platforms;android-37.0" "build-tools;36.0.0"
+      # The runner image already has the Android SDK (ANDROID_HOME) but not platform 37.
+      # Use its newest sdkmanager directly; the setup-android action asks for the
+      # retired "tools" package and fails.
+      - name: Install Android platform 37
+        run: |
+          SDKMANAGER=$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" --install "platforms;android-37.0" "build-tools;36.0.0"
 
       - uses: gradle/actions/setup-gradle@v4
 
