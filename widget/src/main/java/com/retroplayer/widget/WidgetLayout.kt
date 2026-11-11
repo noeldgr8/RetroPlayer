@@ -36,8 +36,9 @@ data class ControlSpot(val control: Control, val face: DpRect, val margin: Float
 
 /**
  * Positions at the design size, stretched to the real widget size:
- * positions scale per axis, the object scales uniformly, controls keep their dp size
- * (touch targets). Every coordinate below is in the real widget's dp.
+ * positions scale per axis and the object scales uniformly. Controls and text shrink with
+ * the widget on smaller screens (the Fold cover screen), down to [MIN_UI_SCALE], and are
+ * kept inside the widget's edges. Every coordinate below is in the real widget's dp.
  */
 class WidgetLayout(
     val style: PlayerStyle,
@@ -51,6 +52,28 @@ class WidgetLayout(
     private val s = min(sx, sy)
     private fun x(v: Float) = v * sx
     private fun y(v: Float) = v * sy
+
+    /** Scale for controls and text: never larger than designed, never too small to tap or read. */
+    val uiScale: Float = s.coerceIn(MIN_UI_SCALE, 1f)
+    private fun u(v: Float) = v * uiScale
+
+    /** Keeps a span of [length] starting at [start] inside 0..[limit] with [inset] padding. */
+    private fun fit(start: Float, length: Float, limit: Float, inset: Float): Float =
+        start.coerceAtMost(limit - inset - length).coerceAtLeast(inset)
+
+    /** Vinyl knob row (Medium / Large): sizes, total width and the Medium row's left edge. */
+    private val side = u(48f)
+    private val play = u(52f)
+    private val gap = u(8f)
+    private val rowW = side + gap + play + gap + side
+    private val mediumRowX = fit(x(176f), rowW, wDp, EDGE)
+
+    companion object {
+        /** Knobs stay at least ~40 dp across, text at least ~13 sp. */
+        const val MIN_UI_SCALE = 0.82f
+        private const val EDGE = 12f
+        private const val MIN_BUTTON_W = 150f
+    }
     private val empty = mode == WidgetMode.Empty
     private val vinyl = style == PlayerStyle.Vinyl
 
@@ -72,7 +95,7 @@ class WidgetLayout(
     /** Title / artist column: left, top, right inset. Null = no text at this size. */
     val text: DpRect? = when (size) {
         WidgetSize.Small -> null
-        WidgetSize.Medium -> if (vinyl) DpRect(x(180f), y(20f), wDp - x(180f) - 14f, 0f)
+        WidgetSize.Medium -> if (vinyl) DpRect(mediumRowX + 4f, y(20f), wDp - mediumRowX - 4f - 14f, 0f)
         else DpRect(x(216f), y(22f), wDp - x(216f) - 14f, 0f)
         WidgetSize.Large -> if (vinyl) DpRect(x(22f), y(270f), if (empty) x(150f) else x(150f), 0f)
         else DpRect(x(22f), y(180f), wDp - x(22f) - 60f, 0f)
@@ -94,18 +117,22 @@ class WidgetLayout(
     /** "Open Spotify" button in the empty state. */
     val openButton: DpRect? = if (!empty) null else when (size) {
         WidgetSize.Small -> DpRect(12f, y(if (vinyl) 110f else 104f), wDp - 24f, 48f)
-        WidgetSize.Medium -> text!!.let { DpRect(it.x, hDp - 48f - 14f, it.w, 48f) }
+        // At least wide enough for "Open Spotify" on one line; grows left when the text column is narrow.
+        WidgetSize.Medium -> text!!.let {
+            val bw = maxOf(it.w, MIN_BUTTON_W).coerceAtMost(wDp - 2 * EDGE)
+            DpRect(wDp - 14f - bw, hDp - 48f - 14f, bw, 48f)
+        }
         WidgetSize.Large -> if (vinyl) DpRect(x(190f), y(282f), wDp - x(190f) - 16f, 48f)
         else DpRect(x(80f), y(280f), wDp - x(80f) - x(80f), 48f)
     }
 
     /** Cassette key well. */
     val well: DpRect? = if (vinyl || empty) null else {
-        val keyH = if (size == WidgetSize.Large) 72f else 48f
+        val wellH = u(if (size == WidgetSize.Large) 72f else 48f) + 12f
         when (size) {
-            WidgetSize.Small -> DpRect(12f, y(98f), wDp - 24f, keyH + 12f)
-            WidgetSize.Medium -> DpRect(12f, y(104f), wDp - 24f, keyH + 12f)
-            WidgetSize.Large -> DpRect(14f, y(250f), wDp - 28f, keyH + 12f)
+            WidgetSize.Small -> DpRect(12f, fit(y(98f), wellH, hDp, 8f), wDp - 24f, wellH)
+            WidgetSize.Medium -> DpRect(12f, fit(y(104f), wellH, hDp, 8f), wDp - 24f, wellH)
+            WidgetSize.Large -> DpRect(14f, fit(y(250f), wellH, hDp, 10f), wDp - 28f, wellH)
         }
     }
 
@@ -119,14 +146,17 @@ class WidgetLayout(
         val m = 8f
         fun knob(c: Control, x: Float, y: Float, d: Float) = ControlSpot(c, DpRect(x, y, d, d), m)
         return when (size) {
-            WidgetSize.Small -> listOf(knob(Control.PlayPause, x(110f), y(110f), 52f))
+            WidgetSize.Small -> listOf(
+                knob(Control.PlayPause, fit(x(110f), play, wDp, m), fit(y(110f), play, hDp, m), play),
+            )
             WidgetSize.Medium, WidgetSize.Large -> {
-                val startX = if (size == WidgetSize.Medium) x(176f) else wDp - 16f - (48f + 8f + 52f + 8f + 48f)
-                val top = if (size == WidgetSize.Medium) y(104f) else y(266f)
+                val startX = if (size == WidgetSize.Medium) mediumRowX else fit(wDp - 16f - rowW, rowW, wDp, EDGE)
+                val top = fit(if (size == WidgetSize.Medium) y(104f) else y(266f), play, hDp, EDGE)
+                val dy = (play - side) / 2f
                 listOf(
-                    knob(Control.Previous, startX, top + 2f, 48f),
-                    knob(Control.PlayPause, startX + 56f, top, 52f),
-                    knob(Control.Next, startX + 116f, top + 2f, 48f),
+                    knob(Control.Previous, startX, top + dy, side),
+                    knob(Control.PlayPause, startX + side + gap, top, play),
+                    knob(Control.Next, startX + side + gap + play + gap, top + dy, side),
                 )
             }
         }

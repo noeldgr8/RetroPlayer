@@ -188,12 +188,12 @@ private fun WidgetContent(
                     Text(
                         title,
                         maxLines = 2,
-                        style = TextStyle(color = ColorProvider(ink), fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                        style = TextStyle(color = ColorProvider(ink), fontSize = (16f * layout.uiScale).sp, fontWeight = FontWeight.Bold),
                     )
                     Text(
                         sub,
                         maxLines = if (layout.size == WidgetSize.Medium) 1 else 2,
-                        style = TextStyle(color = ColorProvider(inkVariant), fontSize = 13.sp),
+                        style = TextStyle(color = ColorProvider(inkVariant), fontSize = (13f * layout.uiScale).coerceAtLeast(12f).sp),
                     )
                 }
             }
